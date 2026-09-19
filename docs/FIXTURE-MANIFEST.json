@@ -1,0 +1,30 @@
+{
+  "id": "synthetic-lab-v1",
+  "mode": "synthetic_test",
+  "generator": "deterministic-sine-v1",
+  "createdAt": "2026-09-19",
+  "rights": "Original mathematical test vectors; redistribution permitted by project author. No vendor data.",
+  "warning": "SYNTHETIC TEST DATA — not historical or current real-world prices",
+  "adjustment": "No real corporate actions; test-only unadjusted OHLCV",
+  "feed": "local mathematical vectors",
+  "delay": "Not a market feed",
+  "retrievedAt": "2026-09-19T00:00:00Z",
+  "calendar": "Synthetic weekdays, not an exchange calendar",
+  "assets": [
+    {
+      "id": "us-aapl",
+      "count": 440,
+      "from": "2023-01-02",
+      "to": "2024-09-06",
+      "sha256": "43c3a6d4fd3ca478de31eef104d4acde0dad97659d61b0106c46a79efb8b61b3"
+    },
+    {
+      "id": "us-spy",
+      "count": 440,
+      "from": "2023-01-02",
+      "to": "2024-09-06",
+      "sha256": "73f93238e6da5cc0b90893aa5254f0ba988ce4b16fbaf6ea802a0abd6d19e41a"
+    }
+  ],
+  "dataModuleSha256": "5ba1ae2bfdd619909e882195b02feba91b735767ca22da9777a5e10f6a5e14cd"
+}

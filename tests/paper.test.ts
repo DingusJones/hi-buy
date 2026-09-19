@@ -1,0 +1,16 @@
+import {describe,it,expect} from 'vitest';
+import {assets,dates} from '../src/data';
+import {alertEvents,initialState,restore,simulate,type Intent} from '../src/paper';
+const intent:Intent={id:'test-1',assetId:'us-aapl',section:'stocks',createdAt:dates[399],quantity:10,stop:10,target:1000};
+describe('separate decimal paper ledger',()=>{
+ it('never fills signal bar; next open is adversely slipped and cash conserved',()=>{expect(simulate([intent],'stocks',dates[399]).positions[0].state).toBe('pending');const l=simulate([intent],'stocks',dates[400]),p=l.positions[0];expect(p.state).toBe('open');expect(Number(p.entry)).toBeGreaterThan(assets[0].bars[400].open);expect(Number(l.cash)+Number(p.entry)*10).toBeCloseTo(100000,8);expect(p.filledAt).toBe(dates[400]);});
+ it('idempotent intent IDs do not duplicate fills and account types reject mismatches',()=>{expect(simulate([intent,intent],'stocks',dates[400]).positions).toHaveLength(1);expect(()=>simulate([intent],'etfs',dates[400])).toThrow('Cross-section');expect(simulate([],'etfs',dates[400]).cash).toBe('100000.00');});
+ it('stop first when a later daily bar touches both stop and target',()=>{const b=assets[0].bars.map(x=>({...x}));b[400]={...b[400],open:100,close:100,low:80,high:120};const l=simulate([{...intent,stop:90,target:110}],'stocks',dates[400],{'us-aapl':b});expect(l.positions[0].exit).toBe('89.91');expect(l.positions[0].reason).toContain('ambiguity');expect(Number(l.cash)).toBeLessThan(100000);});
+ it('gaps outside structural bounds and insufficient cash cancel intents',()=>{expect(simulate([{...intent,quantity:10000}],'stocks',dates[400]).positions[0].state).toBe('cancelled');expect(simulate([{...intent,target:11}],'stocks',dates[400]).positions[0].state).toBe('cancelled');});
+ it('exits at next open after 20 completed holding sessions',()=>{const l=simulate([intent],'stocks',dates[420]);expect(l.positions[0].state).toBe('closed');expect(l.positions[0].reason).toContain('20-session');});
+ it('rewind preserves original decisions without exposing a future fill',()=>{const intents=[intent];simulate(intents,'stocks',dates[430]);expect(simulate(intents,'stocks',dates[399]).positions[0].state).toBe('pending');expect(intents).toEqual([intent]);});
+});
+describe('backup and replay alerts',()=>{
+ it('round-trips notes, watchlist and ledger; rejects corrupt restore',()=>{const s={...initialState,notes:{'us-aapl':'<script>literal research text</script>'},watch:['us-aapl'],intents:[intent]};expect(restore(JSON.stringify(s))).toEqual(s);expect(()=>restore('{broken')).toThrow();expect(()=>restore(JSON.stringify({...s,cursor:999}))).toThrow();expect(()=>restore(JSON.stringify({...s,intents:[{...intent,section:'etfs'}]}))).toThrow();});
+ it('evaluates only later crossings and uses stable duplicate keys',()=>{const threshold=(assets[0].bars[400].close+assets[0].bars[399].close)/2;const state={...initialState,cursor:439,alerts:[{id:'r',assetId:'us-aapl' as const,threshold,createdAt:dates[399],paused:false}]};const events=alertEvents(state);expect(new Set(events.map(e=>e.id)).size).toBe(events.length);expect(events.every(e=>e.date>dates[399])).toBe(true);expect(alertEvents({...state,cursor:399})).toHaveLength(0);expect(alertEvents({...state,alerts:[{...state.alerts[0],paused:true}]})).toHaveLength(0);});
+});
