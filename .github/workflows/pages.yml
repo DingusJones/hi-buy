@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  workflow_run:
+    workflows: [Ingest public snapshot]
+    types: [completed]
+    branches: [main]
 
 permissions: {}
 
@@ -13,25 +17,50 @@ concurrency:
 
 jobs:
   build:
+    if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
+    timeout-minutes: 10
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.changed.outputs.deploy }}
     permissions:
       contents: read
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
+          ref: main
+      - name: Check whether ingestion published a change
+        id: changed
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INGESTION_START_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          if [ "$EVENT_NAME" != "workflow_run" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          elif [ "$(git rev-parse HEAD)" != "$INGESTION_START_SHA" ]; then
+            echo "deploy=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "deploy=false" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
       - run: npm ci
+        if: steps.changed.outputs.deploy == 'true'
       - run: npm run verify
+        if: steps.changed.outputs.deploy == 'true'
+      # GitHub Actions automatically sets GITHUB_ACTIONS=true for the Pages base.
+      - run: node scripts/verify-theme.mjs
+        if: steps.changed.outputs.deploy == 'true'
       - uses: actions/upload-pages-artifact@v5
+        if: steps.changed.outputs.deploy == 'true'
         with:
           path: dist
 
   deploy:
-    if: github.ref == 'refs/heads/main'
+    timeout-minutes: 10
+    if: github.ref == 'refs/heads/main' && needs.build.outputs.changed == 'true'
     needs: build
     runs-on: ubuntu-latest
     permissions:

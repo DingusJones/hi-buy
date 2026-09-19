@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open **http://127.0.0.1:5173**. Both development and production preview bind to localhost. Installation needs npm access once; the installed application makes no provider requests and works without internet. No remote fonts, images, analytics, chart embeds or tracking pixels load. Outbound research links use the network only when you click them.
+Open **http://127.0.0.1:5173**. Both development and production preview bind to localhost. Installation needs npm access once; the synthetic lab works without internet. For public observations, the browser makes only same-origin requests to the file `public/live/latest.json`, served as `BASE_URL/live/latest.json`. GitHub Actions runs the no-key public snapshot generator and makes the provider requests. No remote fonts, images, analytics, chart embeds or tracking pixels load. Outbound research links use the network only when you click them.
 
 ```sh
 npm run typecheck       # TypeScript
@@ -21,13 +21,16 @@ npm run build           # TypeScript + production bundle in dist/
 npm run preview         # http://127.0.0.1:4173
 npm run verify          # All non-browser checks above
 npm run test:e2e         # Playwright, starts production preview; build first
+node scripts/verify-theme.mjs # Verify theme asset path and unchanged CSP; build first
 ```
+
+Local development and production builds use `/`, including Playwright's preview. Only `GITHUB_ACTIONS=true` selects the GitHub Pages base `/hi-buy/`; the Pages workflow receives this variable automatically. To check that build locally, run `GITHUB_ACTIONS=true npm run build` followed by `GITHUB_ACTIONS=true node scripts/verify-theme.mjs` (expects `/hi-buy/theme.js`). Rebuild with `npm run build` before local preview or E2E tests (expects `/theme.js`).
 
 Playwright defaults to `/usr/bin/chromium` on this ThinkCentre. Set `CHROMIUM_PATH` for a different installed Chromium, or install Playwright's Chromium and set `PLAYWRIGHT_BUNDLED_BROWSER=1`. E2E tests cover the research-to-paper journey, backup restore, all market sections, and 360/390/768/1440 viewport overflow. No separate lint configuration is present; TypeScript is the configured static check.
 
 ## Demo data and what you can do
 
-The always-visible **SYNTHETIC TEST LAB** banner is intentional. AAPL and SPY are identity/link examples, not research picks. Their displayed numbers are **original mathematical vectors, not actual historical or current prices**. Each has 440 deterministic weekday bars from **2023-01-02 through 2024-09-06**. Holidays are not modeled. The test clock starts at bar 400 and advances through bar 440. Every calculation sees only the prefix through that clock. The [fixture manifest](docs/FIXTURE-MANIFEST.json) records mode, dates, provenance and SHA-256 hashes.
+The always-visible **SYNTHETIC TEST LAB** banner is intentional. AAPL and SPY are identity/link examples, not research picks. Their synthetic workspace numbers are **original mathematical vectors, not actual historical or current prices**; separately labeled public-source panels show snapshot observations. Each has 440 deterministic weekday bars from **2023-01-02 through 2024-09-06**. Holidays are not modeled. The test clock starts at bar 400 and advances through bar 440. Every calculation sees only the prefix through that clock. The [fixture manifest](docs/FIXTURE-MANIFEST.json) records mode, dates, provenance and SHA-256 hashes.
 
 1. Open **AAPL test workspace** or **SPY test workspace** from Overview.
 2. Inspect the chart, data-table equivalent, indicator views and source details.
@@ -43,12 +46,12 @@ Implemented surfaces:
 - Eight separately titled top-10 boards, with ten honest vacancies each while required market data/metadata is unavailable. Type-safe board sorting and shortage logic are tested independently using unit vectors.
 - Independent **Top 5 Stock Research Candidates** and **Top 5 ETF Research Candidates**. Test vectors never qualify. Candidate selection, issuer/exposure deduplication, tag quotas, concentration fallback, shortage and independent outage states have domain tests.
 - **Top 5 Market News**, instrument news, and separately labeled official-source links. Unapproved feeds display explicit vacancies rather than invented headlines. Metadata-only deduplication/rights/time/entity validation is implemented and tested.
-- Eight commodity catalog entries with source links, units where reviewed, periodic-observation semantics and unavailable values. No inferred futures curves.
-- BTC, ETH and SOL native identities, USD/24-hour field labels, source/network links and honest unavailable states. Actual dated prices can be inspected through a permitted local import; no invented crypto price fixtures are shipped.
+- Eight commodity catalog entries with source links, units where reviewed, periodic-observation semantics and public snapshots for WTI, Brent and natural gas; gold, silver, copper, corn and wheat remain unavailable. No inferred futures curves.
+- BTC, ETH and SOL native identities, USD/24-hour field labels, source/network links and public snapshot observations with honest freshness/unavailable states. Additional dated prices can be inspected through a permitted local import; no invented crypto price fixtures are shipped.
 - Daily candlesticks/volume, historical SMA/EMA 20/50/100/200 overlays, RSI plot, chart data table, MACD, ATR, DMI/ADX, Bollinger bands/squeeze, OBV/RVOL, volatility and price drawdown. Confirmed Fibonacci pivots/retracements/extensions and RSI divergence use confirmation lag. Complete-link confluence and matched-series relative strength are implemented as pure functions; absent weekly/benchmark inputs remain unavailable in the demo.
 - Explainable **illustrative** Stock standard / ETF core component calculations, missing-weight coverage and the stock-only unknown-earnings penalty. No official candidate or probability-of-profit claim.
 - Separate $100,000 stock/ETF paper accounts, decimal cash arithmetic, future-bar-only manual entries, 10 bps adverse slippage, participation/cash checks, stop-first ambiguity, conservative targets and 20-session exits. There is no brokerage code or order endpoint.
-- Responsive CSS, semantic navigation/forms/tables, 44px controls, visible focus, reduced-motion support and no color-only financial states. Browser/screen-reader acceptance still needs a normal local run.
+- Responsive CSS, semantic navigation/forms/tables, 44px controls, visible focus, reduced-motion support and no color-only financial states. Browser acceptance passed; manual screen-reader review remains outstanding.
 
 ## Permitted historical imports
 
@@ -93,8 +96,8 @@ This environment contained no app and could not resolve npm hosts. Available loc
 Rights/data gates:
 
 - No licensed real securities history, action ledger, exchange calendar, point-in-time fundamentals, holdings, metadata or consolidated liquidity is bundled. The approved 60-stock/40-ETF universes remain uncurated; only two test identity examples are provided.
-- Crypto live acceptance requires permitted BTC/ETH/SOL feeds; commodity series need source-specific coverage/rights; headline feeds need display/retention/entity review. There are **no current real-world prices, news or recommendations** in this demo.
-- `DataAdapter<T>` and capability guards provide an optional read-only adapter boundary. No live HTTP transport, credentials, provider enrollment or background fetching is implemented. Fetch/display/retention/export/derived rights remain independently unknown and disabled. Provider names are proposed choices from the plan, not claims of current entitlements.
+- The current checked-in snapshot contains numeric AAPL, SPY, BTC, ETH, SOL, WTI, Brent and natural-gas observations. Gold, silver, copper, corn and wheat remain unavailable. These dated observations are not guaranteed current: freshness, unknown delays and outages are displayed explicitly. There are still no live news, candidates, boards or paper fills. Source-specific rights and headline display/retention/entity review remain gates; Yahoo is unofficial and rights-unverified, not a licensed consolidated feed.
+- `DataAdapter<T>` and capability guards provide an optional read-only adapter boundary. The public snapshot generator is a separate no-key HTTP ingestion path run by GitHub Actions; the browser only retrieves its same-origin JSON. The adapter boundary does not grant fetch/display/retention/export/derived rights or imply provider entitlements. No full private/live backend is implemented.
 - Intraday, synchronized futures curves, on-chain yields, public redistribution, vendor payload exports and TradingView embeds remain disabled. TradingView is outbound only; AAPL=`NASDAQ:AAPL`, SPY=`AMEX:SPY`, unknown mappings remain unavailable.
 
 Implementation work remaining beyond the demo:
@@ -107,6 +110,18 @@ Implementation work remaining beyond the demo:
 
 ## Verification in this environment
 
-See [implementation verification](docs/IMPLEMENTATION-VERIFICATION.md) for commands and outcomes. Unit/DOM tests, fixture verification, TypeScript and the production bundle pass. Browser/server checks were attempted but are **blocked by environment permissions**: listening on `127.0.0.1:4173` fails with `EPERM`; Chromium fails on restricted socket operations. No policy bypass or deployment was attempted. Run the supplied Playwright suite in a normal local shell before browser acceptance.
+See [implementation verification](docs/IMPLEMENTATION-VERIFICATION.md) for commands and outcomes. Current checks passed: 64 unit/DOM tests across 7 files, 8 Playwright tests, both 440-bar fixture hashes, TypeScript, local and GitHub-Actions-mode builds, theme path verification, and snapshot parser/direct generator checks. The direct generator produced 8 numeric entries out of 13, present in the checked-in JSON. Scheduled Actions and provider availability remain best-effort, with no production SLA. No deployment is claimed.
 
 Required disclosures appear in context: research candidates are not individualized advice; methodology alignment is not probability of profit; modeled fills differ from execution; distribution yield is not guaranteed total return; and past/backtested results do not guarantee future results.
+
+## Public snapshots and theme (September 2026)
+
+The app now has a separate public-source snapshot layer and a persistent dark-mode
+button. First visit follows the operating-system theme; an explicit choice is saved
+in `hi-buy-theme`. A same-origin head script applies it before the app renders.
+The synthetic lab, replay, scores, alerts, and paper simulation remain synthetic.
+Public observations never qualify Top 5 candidates or Top 10 boards.
+
+See [snapshot operations](docs/public-snapshots.md) for setup, endpoints, rights,
+failure policy and verification. Public snapshots remain separate from the synthetic
+lab and do not complete the planned private/live MVP.

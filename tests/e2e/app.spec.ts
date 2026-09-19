@@ -1,7 +1,8 @@
 import {test,expect} from '@playwright/test';
+test.beforeEach(async({page})=>{await page.route('**/live/latest.json?*',route=>route.fulfill({json:{version:1,entries:{}}}));});
 test('complete research-to-paper journey survives reload',async({page})=>{
  const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
- await page.goto('/');await expect(page.getByRole('link',{name:'hi buy.com',exact:true})).toBeVisible();await expect(page.getByText('SYNTHETIC TEST LAB — NO LIVE MARKET DATA')).toBeVisible();
+ await page.goto('/');await expect(page.getByRole('link',{name:'hi buy.com',exact:true})).toBeVisible();await expect(page.getByText('SYNTHETIC TEST LAB — SEPARATE FROM PUBLIC SNAPSHOTS')).toBeVisible();
  await expect(page.getByRole('heading',{name:'Top 5 Stock Research Candidates'})).toBeVisible();await expect(page.getByRole('heading',{name:'Top 5 ETF Research Candidates'})).toBeVisible();await expect(page.getByRole('heading',{name:'Top 5 Market News'})).toBeVisible();
  await page.getByRole('link',{name:'Open AAPL test workspace'}).click();await expect(page).toHaveURL(/stocks\/us-aapl/);
  await page.getByRole('button',{name:'Show chart data table'}).click();await expect(page.getByRole('table')).toHaveCount(2);
@@ -13,7 +14,7 @@ test('complete research-to-paper journey survives reload',async({page})=>{
 });
 test('independent sections, board headings and honest absent prices',async({page})=>{
  for(const section of ['stocks','etfs']){await page.goto(`/${section}/boards`);for(const title of section==='stocks'?['Top 10 stock gainers','Top 10 stock losers','Top 10 stocks by share volume','Top 10 stocks by dollar volume']:['Top 10 ETF gainers','Top 10 ETF losers','Top 10 ETFs by share volume','Top 10 ETFs by dollar volume'])await expect(page.getByRole('heading',{name:title,exact:true})).toBeVisible();}
- await page.goto('/crypto');for(const symbol of ['BTC','ETH','SOL'])await expect(page.getByRole('heading',{name:symbol,exact:true})).toBeVisible();await expect(page.getByText('Unavailable',{exact:true})).toHaveCount(3);
+ await page.goto('/crypto');for(const symbol of ['BTC','ETH','SOL'])await expect(page.getByRole('heading',{name:symbol,exact:true})).toBeVisible();await expect(page.locator('.price').filter({hasText:/^Unavailable$/})).toHaveCount(3);
  await page.goto('/commodities');await expect(page.getByRole('heading',{name:'WTI crude'})).toBeVisible();await page.getByLabel('Category').selectOption('Metals');await expect(page.getByRole('heading',{name:'Gold',exact:true})).toBeVisible();await expect(page.getByRole('heading',{name:'WTI crude'})).toHaveCount(0);
  await page.goto('/stocks/unknown');await expect(page.getByRole('heading',{name:'Unknown instrument'})).toBeVisible();
 });
@@ -29,3 +30,4 @@ test('export, destructive confirmation and backup restore',async({page})=>{
  await page.goto('/settings');page.once('dialog',d=>d.accept());await page.getByRole('button',{name:'Delete private data / reset'}).click();await page.goto('/watchlists');await expect(page.getByText('No saved assets. Add one from a research workspace.')).toBeVisible();
  await page.goto('/settings');page.once('dialog',d=>d.accept());await page.getByLabel('Restore backup').setInputFiles(file!);await expect(page.getByRole('status')).toContainText('Backup restored');await page.goto('/watchlists');await expect(page.getByRole('link',{name:'AAPL · stocks'})).toBeVisible();
 });
+test('theme respects system preference, persists override, and refresh stays same-origin',async({page})=>{await page.emulateMedia({colorScheme:'dark'});await page.goto('/');const toggle=page.getByRole('button',{name:'Dark mode',exact:true});await expect(toggle).toHaveAttribute('aria-pressed','true');await toggle.click();await page.reload();await expect(toggle).toHaveAttribute('aria-pressed','false');await expect(page.locator('html')).toHaveAttribute('data-theme','light');await page.getByRole('button',{name:'Refresh snapshot',exact:true}).click();await expect(page.getByText(/Last snapshot retrieved by this browser:/)).not.toContainText('Not yet');});

@@ -1,0 +1,1 @@
+(function(){var theme;try{theme=localStorage.getItem('hi-buy-theme');}catch{}if(theme!=='light'&&theme!=='dark')theme=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.dataset.theme=theme;})();
