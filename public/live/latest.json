@@ -6,11 +6,11 @@
       "url": "https://finance.yahoo.com/quote/AAPL/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-09-29T13:49:26.216Z",
-      "observedAt": "2026-09-29T13:49:25.000Z",
+      "retrievedAt": "2026-09-29T18:54:50.645Z",
+      "observedAt": "2026-09-29T18:54:49.000Z",
       "status": "available",
       "error": null,
-      "price": 332.71,
+      "price": 331.192,
       "change": null,
       "volume": null,
       "marketCap": null,
@@ -1027,9 +1027,9 @@
           "date": "2026-09-29",
           "open": 337.05999755859375,
           "high": 337.05999755859375,
-          "low": 332.05999755859375,
-          "close": 332.7099914550781,
-          "volume": 4073812
+          "low": 330.54998779296875,
+          "close": 331.1919860839844,
+          "volume": 20900662
         }
       ]
     },
@@ -1038,11 +1038,11 @@
       "url": "https://finance.yahoo.com/quote/SPY/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-09-29T13:49:26.216Z",
-      "observedAt": "2026-09-29T13:49:25.000Z",
+      "retrievedAt": "2026-09-29T18:54:50.645Z",
+      "observedAt": "2026-09-29T18:54:48.000Z",
       "status": "available",
       "error": null,
-      "price": 764.845,
+      "price": 764.65,
       "change": null,
       "volume": null,
       "marketCap": null,
@@ -2059,9 +2059,9 @@
           "date": "2026-09-29",
           "open": 766.8300170898438,
           "high": 766.9500122070312,
-          "low": 764.760009765625,
-          "close": 764.844970703125,
-          "volume": 3286437
+          "low": 762.3499755859375,
+          "close": 764.6500244140625,
+          "volume": 22229804
         }
       ]
     },
