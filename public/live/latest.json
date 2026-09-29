@@ -6,11 +6,11 @@
       "url": "https://finance.yahoo.com/quote/AAPL/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-09-29T18:54:50.645Z",
-      "observedAt": "2026-09-29T18:54:49.000Z",
+      "retrievedAt": "2026-09-29T22:49:18.166Z",
+      "observedAt": "2026-09-29T20:00:00.000Z",
       "status": "available",
       "error": null,
-      "price": 331.192,
+      "price": 329.4,
       "change": null,
       "volume": null,
       "marketCap": null,
@@ -1021,15 +1021,15 @@
           "high": 342.989990234375,
           "low": 338.0400085449219,
           "close": 338.3999938964844,
-          "volume": 32724700
+          "volume": 32820800
         },
         {
           "date": "2026-09-29",
           "open": 337.05999755859375,
           "high": 337.05999755859375,
-          "low": 330.54998779296875,
-          "close": 331.1919860839844,
-          "volume": 20900662
+          "low": 328.70001220703125,
+          "close": 329.3999938964844,
+          "volume": 37773928
         }
       ]
     },
@@ -1038,11 +1038,11 @@
       "url": "https://finance.yahoo.com/quote/SPY/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-09-29T18:54:50.645Z",
-      "observedAt": "2026-09-29T18:54:48.000Z",
+      "retrievedAt": "2026-09-29T22:49:18.166Z",
+      "observedAt": "2026-09-29T20:00:00.000Z",
       "status": "available",
       "error": null,
-      "price": 764.65,
+      "price": 764.2,
       "change": null,
       "volume": null,
       "marketCap": null,
@@ -2053,15 +2053,15 @@
           "high": 769.5399780273438,
           "low": 763.719970703125,
           "close": 765.6099853515625,
-          "volume": 42296700
+          "volume": 42694500
         },
         {
           "date": "2026-09-29",
           "open": 766.8300170898438,
           "high": 766.9500122070312,
           "low": 762.3499755859375,
-          "close": 764.6500244140625,
-          "volume": 22229804
+          "close": 764.2000122070312,
+          "volume": 36577604
         }
       ]
     },
