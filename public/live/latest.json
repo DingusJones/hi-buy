@@ -6,23 +6,15 @@
       "url": "https://finance.yahoo.com/quote/AAPL/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-10-09T19:51:32.343Z",
-      "observedAt": "2026-10-09T19:51:31.000Z",
+      "retrievedAt": "2026-10-09T23:37:56.295Z",
+      "observedAt": "2026-10-09T20:00:00.000Z",
       "status": "available",
       "error": null,
-      "price": 336.805,
+      "price": 336.64,
       "change": null,
       "volume": null,
       "marketCap": null,
       "bars": [
-        {
-          "date": "2026-04-09",
-          "open": 259,
-          "high": 261.1199951171875,
-          "low": 256.07000732421875,
-          "close": 260.489990234375,
-          "volume": 28121600
-        },
         {
           "date": "2026-04-10",
           "open": 259.9800109863281,
@@ -1036,8 +1028,8 @@
           "open": 331.7900085449219,
           "high": 338.6099853515625,
           "low": 330.70001220703125,
-          "close": 336.80450439453125,
-          "volume": 30287949
+          "close": 336.6400146484375,
+          "volume": 37821157
         }
       ]
     },
@@ -1046,23 +1038,15 @@
       "url": "https://finance.yahoo.com/quote/SPY/",
       "unit": "USD",
       "delay": "Unofficial / potentially delayed; rights-unverified; not a licensed consolidated feed",
-      "retrievedAt": "2026-10-09T19:51:32.343Z",
-      "observedAt": "2026-10-09T19:51:31.000Z",
+      "retrievedAt": "2026-10-09T23:37:56.295Z",
+      "observedAt": "2026-10-09T20:00:00.000Z",
       "status": "available",
       "error": null,
-      "price": 778.43,
+      "price": 778.57,
       "change": null,
       "volume": null,
       "marketCap": null,
       "bars": [
-        {
-          "date": "2026-04-09",
-          "open": 674.8400268554688,
-          "high": 681.1599731445312,
-          "low": 673.77001953125,
-          "close": 679.9099731445312,
-          "volume": 57134400
-        },
         {
           "date": "2026-04-10",
           "open": 681.3200073242188,
@@ -2076,8 +2060,8 @@
           "open": 776.239990234375,
           "high": 779.4199829101562,
           "low": 775.1400146484375,
-          "close": 778.4299926757812,
-          "volume": 17274271
+          "close": 778.5700073242188,
+          "volume": 22307034
         }
       ]
     },
@@ -2086,14 +2070,14 @@
       "url": "https://www.coingecko.com/en/api",
       "unit": "USD",
       "delay": "Aggregate / cached; delay unknown",
-      "retrievedAt": "2026-10-09T19:51:32.343Z",
-      "observedAt": "2026-10-09T19:50:40.000Z",
+      "retrievedAt": "2026-10-09T23:37:56.295Z",
+      "observedAt": "2026-10-09T23:37:03.000Z",
       "status": "available",
       "error": null,
-      "price": 82319,
-      "change": 0.7638829740928277,
-      "volume": 26739134389.521294,
-      "marketCap": 1653885199637.4797,
+      "price": 82551,
+      "change": 0.9138726206727306,
+      "volume": 26287330058.769928,
+      "marketCap": 1658955815817.8274,
       "bars": []
     },
     "ethereum": {
@@ -2101,14 +2085,14 @@
       "url": "https://www.coingecko.com/en/api",
       "unit": "USD",
       "delay": "Aggregate / cached; delay unknown",
-      "retrievedAt": "2026-10-09T19:51:32.343Z",
-      "observedAt": "2026-10-09T19:50:40.000Z",
+      "retrievedAt": "2026-10-09T23:37:56.295Z",
+      "observedAt": "2026-10-09T23:36:51.000Z",
       "status": "available",
       "error": null,
-      "price": 2475.14,
-      "change": 0.5728409281825171,
-      "volume": 10163275142.60596,
-      "marketCap": 302204393661.73376,
+      "price": 2486.51,
+      "change": 0.3475428444261457,
+      "volume": 9543041337.409317,
+      "marketCap": 303650903401.3042,
       "bars": []
     },
     "solana": {
@@ -2116,14 +2100,14 @@
       "url": "https://www.coingecko.com/en/api",
       "unit": "USD",
       "delay": "Aggregate / cached; delay unknown",
-      "retrievedAt": "2026-10-09T19:51:32.343Z",
-      "observedAt": "2026-10-09T19:50:40.000Z",
+      "retrievedAt": "2026-10-09T23:37:56.295Z",
+      "observedAt": "2026-10-09T23:37:03.000Z",
       "status": "available",
       "error": null,
-      "price": 108.54,
-      "change": -0.5482849152908741,
-      "volume": 3073697588.902351,
-      "marketCap": 63909984199.86492,
+      "price": 109.14,
+      "change": -0.9727014498174748,
+      "volume": 2869776815.25735,
+      "marketCap": 64252255145.48619,
       "bars": []
     },
     "wti": {
